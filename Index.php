@@ -1,38 +1,40 @@
-<?php
-
-?>
+<?php include 'backend/application-logic.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>TP7DPBO2526C1</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <?php include("view/header.php"); ?>
+    <?php include 'view/header.php'; ?>
 
     <nav>
-        <a href="?page=0"></a>
-        <a href="?page=1"></a>
-        <a href="?page=2"></a>
+        <a href="?page=customer">Customer</a>
+        <a href="?page=product">Product</a>
+        <a href="?page=transaction">Transaction</a>
     </nav>
 
     <main>
+        <?php if ($error !== ''): ?>
+            <p class="message error" role="alert"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></p>
+        <?php elseif ($notice !== ''): ?>
+            <p class="message success" role="status"><?= htmlspecialchars($notice, ENT_QUOTES, 'UTF-8') ?></p>
+        <?php endif; ?>
         <?php
-            if(isset($_GET["page"])) {
-                $page = $_GET["page"];
-                if($page == "0"){
-                    
-                }else if($page == "1"){
-
-                }else{
-                    
-                }
+            if($page == "customer") {
+                include 'view/customers.php';
+            }else if($page == "product") {
+                include 'view/products.php';
+            }else if($page == "transaction"){
+                include 'view/transactions.php';
             }
         ?>
     </main>
 
-    <?php include("view/footer.php"); ?>
+    <?php include 'view/footer.php'; ?>
 </body>
 </html>
