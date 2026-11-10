@@ -1,3 +1,4 @@
+/* Tata letak dasar aplikasi dan warna utama antarmuka. */
 * {
     box-sizing: border-box;
 }
@@ -166,6 +167,7 @@ footer p {
     margin: 0;
 }
 
+/* Penyesuaian navigasi, konten, dan tabel untuk layar ponsel. */
 @media (max-width: 520px) {
     nav {
         gap: 0.15rem;

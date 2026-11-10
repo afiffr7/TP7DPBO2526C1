@@ -1,7 +1,9 @@
 <?php
+// Opsi relasi diambil agar transaksi dapat memilih customer dan product yang tersedia.
 $customerOptions = $customers->getAll();
 $productOptions = $products->getAll();
 ?>
+<!-- Tabel transaksi menampilkan relasi dan rincian tiap transaksi. -->
 <h3>Transaction List</h3>
 <table>
     <thead>
@@ -60,6 +62,7 @@ $productOptions = $products->getAll();
     </tbody>
 </table>
 
+<!-- Form penambahan transaksi menghubungkan customer dan product pilihan. -->
 <form method="post">
     <h3>Add Data</h3>
     <input type="hidden" name="page" value="transaction">

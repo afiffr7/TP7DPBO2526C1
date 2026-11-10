@@ -1,4 +1,5 @@
 <?php
+// Muat model yang menangani akses data untuk tiap fitur.
 require_once 'class/Customer.php';
 require_once 'class/Product.php';
 require_once 'class/Transaction.php';
@@ -12,11 +13,12 @@ $pages = ['customer', 'product', 'transaction']; // daftar halaman yang valid
 $page = $_GET['page'] ?? 'customer'; // set page ke default yaitu customer jika belum diset
 $error = ''; // error message
 
+// Batasi halaman yang dapat dipilih melalui URL.
 if (!is_string($page) || !in_array($page, $pages, true)) {
     $page = 'customer';
 }
 
-// logic untuk form CRUD
+// Tangani seluruh operasi tambah, ubah, dan hapus yang dikirim melalui POST.
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $postedPage = $_POST['page'] ?? ''; // deklarasi variabel page yaitu class yang sedang dikenakan CRUD saat ini
     $action = $_POST['action'] ?? ''; // deklarasi action CRUD yang sedang dilakukan
@@ -29,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page = $postedPage;
     }
 
-    // cek validasi data form
+    // Periksa halaman, aksi, dan ID sebelum menggunakan data kiriman.
     if (
         !is_string($postedPage) ||
         !in_array($postedPage, $pages, true) ||
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ) {
         $error = 'Invalid form data. Please check the submitted values.';
     } else {
-        // Ambil data dari form berupa seluruh attribut pada class
+        // Ambil nilai form; validasi spesifik dilakukan sebelum memanggil model.
         $name = $_POST['name'] ?? '';
         $membership = $_POST['membership'] ?? '';
         $price = $_POST['price'] ?? '';
@@ -51,21 +53,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $quantity = $_POST['quantity'] ?? '';
         $totalPrice = $_POST['total_price'] ?? '';
 
-        $valid = true; // variabel pengecek validasi data form jika diupdate
+        // Cocokkan aksi dengan fitur dan lakukan validasi sebelum CRUD.
+        $valid = true;
         $updated = false;
 
+        // Customer dapat ditambahkan, diperbarui, atau dihapus.
         if ($action === 'add_customer' && $postedPage === 'customer') {
             $valid = is_string($name) && trim($name) !== ''
                 && is_string($membership) && trim($membership) !== '';
             if ($valid) {
                 $updated = $customers->addData(trim($name), trim($membership));
             }
+        // Product menyimpan nama dan harga berupa angka.
         } elseif ($action === 'add_product' && $postedPage === 'product') {
             $valid = is_string($name) && trim($name) !== ''
                 && is_string($price) && ctype_digit($price);
             if ($valid) {
                 $updated = $products->addData(trim($name), $price);
             }
+        // Transaction menghubungkan customer dan product dengan jumlah serta total harga.
         } elseif ($action === 'add_transaction' && $postedPage === 'transaction') {
             $valid = is_string($customerId) && ctype_digit($customerId) && (int) $customerId > 0
                 && is_string($productId) && ctype_digit($productId) && (int) $productId > 0
@@ -74,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($valid) {
                 $updated = $transactions->addData($customerId, $productId, $quantity, $totalPrice);
             }
+        // Pembaruan memakai validasi yang sama dengan penambahan data.
         } elseif ($action === 'update_customer' && $postedPage === 'customer') {
             $valid = is_string($name) && trim($name) !== ''
                 && is_string($membership) && trim($membership) !== '';
@@ -94,6 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($valid) {
                 $updated = $transactions->update($id, $customerId, $productId, $quantity, $totalPrice);
             }
+        // Hapus data berdasarkan fitur dan ID yang dikirim.
         } elseif ($action === 'delete_customer' && $postedPage === 'customer') {
             $updated = $customers->deleteById($id);
         } elseif ($action === 'delete_product' && $postedPage === 'product') {
@@ -104,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $valid = false;
         }
 
+        // Tampilkan kesalahan, atau alihkan kembali agar form tidak terkirim ulang.
         if (!$valid) {
             $error = 'Please enter valid values for all fields.';
         } elseif (!$updated) {

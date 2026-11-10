@@ -1,3 +1,3 @@
 <footer>
-    <p>&copy; 2026 Library System</p>
+    <p>&copy; 2026 Market transaction System</p>
 </footer>

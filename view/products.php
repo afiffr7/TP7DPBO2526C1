@@ -1,3 +1,4 @@
+<!-- Tabel product menampilkan data sekaligus aksi edit dan hapus. -->
 <h3>Product List</h3>
 <table>
     <thead>
@@ -36,6 +37,7 @@
     </tbody>
 </table>
 
+<!-- Form penambahan product menerima nama dan harga. -->
 <form method="post">
     <h3>Add Data</h3>
     <input type="hidden" name="page" value="product">

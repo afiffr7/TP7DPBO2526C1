@@ -1,3 +1,4 @@
+<!-- Tabel customer menyediakan akses untuk mengubah atau menghapus tiap baris. -->
 <h3>Customer List</h3>
 <table>
     <thead>
@@ -36,6 +37,7 @@
     </tbody>
 </table>
 
+<!-- Form penambahan customer mengirim data ke handler CRUD. -->
 <form method="post">
     <h3>Add Data</h3>
     <input type="hidden" name="page" value="customer">

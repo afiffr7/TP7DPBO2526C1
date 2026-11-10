@@ -1,18 +1,20 @@
 <?php
 require_once 'config/db.php';
 class Transaction {
-    private PDO $db; // attribut PDO untuk koneksi database
+    // Menyimpan koneksi database yang digunakan seluruh operasi transaksi.
+    private PDO $db;
+
     public function __construct() {
         $this->db = (new Database())->conn;
     }
 
-    // method menambah data transaction
+    // Mencatat transaksi dengan relasi customer, product, jumlah, dan total harga.
     public function addData(string $customer_id, string $product_id, string $quantity, string $total_price) {
         $stmt = $this->db->prepare("INSERT INTO transactions (customer_id, product_id, quantity, total_price) VALUES (?, ?, ?, ?)");
         return $stmt->execute([$customer_id, $product_id, $quantity, $total_price]);
     }
 
-    // method mengambil data transaction
+    // Mengambil transaksi sekaligus nama customer dan product untuk ditampilkan.
     public function getAll() {
         $stmt = $this->db->query(
             "SELECT t.id, t.customer_id, t.product_id,
@@ -25,13 +27,13 @@ class Transaction {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // method update data transaction
+    // Memperbarui relasi dan rincian transaksi berdasarkan ID.
     public function update(string $id, string $customer_id, string $product_id, string $quantity, string $total_price) {
         $stmt = $this->db->prepare("UPDATE transactions SET customer_id = ?, product_id = ?, quantity = ?, total_price = ? WHERE id = ?");
         return $stmt->execute([$customer_id, $product_id, $quantity, $total_price, $id]);
     }
 
-    // method delete data transaction
+    // Menghapus transaksi berdasarkan ID.
     public function deleteById(string $id){
         $stmt = $this->db->prepare("DELETE FROM transactions WHERE id = ?");
         return $stmt->execute([$id]);

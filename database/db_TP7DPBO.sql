@@ -1,18 +1,22 @@
+-- Siapkan database dan tabel untuk data customer, product, serta transaksi.
 CREATE DATABASE IF NOT EXISTS db_TP7DPBO;
 USE db_TP7DPBO;
 
+-- Data customer menyimpan nama dan tingkat membership.
 CREATE TABLE customer(
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     membership VARCHAR(255) NOT NULL
 );
 
+-- Data product menyimpan nama dan harga.
 CREATE TABLE product(
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     price INT NOT NULL
 );
 
+-- Transaksi menghubungkan customer dan product melalui foreign key.
 CREATE TABLE transactions(
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
     customer_id INT NOT NULL,
@@ -23,6 +27,7 @@ CREATE TABLE transactions(
     FOREIGN KEY (product_id) REFERENCES product(id)
 );
 
+-- Data awal untuk mencoba fitur daftar dan relasi transaksi.
 INSERT INTO customer (name, membership) VALUES
     ('Andi Pratama', 'Gold'),
     ('Budi Santoso', 'Silver'),
